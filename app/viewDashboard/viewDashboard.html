@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="panel">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Inputs</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Action</th>
+                        <th>Feature</th>
+                        <th>Ten</th>
+                        <th>Fifty</th>
+                        <th>Ninety</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in data.items track by $index">
+                            <td>
+                                <button ng-if="item.editing===false" class="btn btn-primary btn-mini" ng-click="edit($index)">Edit</button>
+                                <button ng-if="item.editing===true" class="btn btn-primary btn-mini" ng-click="update($index)">Done</button>
+                                <button class="btn btn-primary btn-warn" ng-click="remove($index)">Remove</button>
+                            </td>
+                            <td>
+                                <span ng-if="item.editing===false">{{item.name}}</span>
+                                <span ng-if="item.editing===true"><input type="text" class="form-control" ng-model="item.name"/></span>
+                            </td>
+
+                            <td>
+                                <span ng-if="item.editing===false">{{item.ten}}</span>
+                                <span ng-if="item.editing===true"><input type="text" class="form-control" ng-model="item.ten"/></span>
+                            </td>
+                            <td>
+                                <span ng-if="item.editing===false">{{item.fifty}}</span>
+                                <span ng-if="item.editing===true"><input type="text" class="form-control" ng-model="item.fifty"/></span>
+                            </td>
+                            <td>
+                                <span ng-if="item.editing===false">{{item.ninety}}</span>
+                                <span ng-if="item.editing===true"><input type="text" class="form-control" ng-model="item.ninety"/></span>
+                            </td>
+                        </div>
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" ng-click="addRow()">Add</button><br/>
+                <b>Sum</b><br/>
+                Low: {{sum.ten.toFixed(2)}}, Med: {{sum.fifty.toFixed(2)}}, High: {{sum.ninety.toFixed(2)}}
+            </div>
+            <div class="col-md-6">
+                <div id="pdf" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="cdf" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto"></div>
+
