@@ -242,7 +242,11 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
     }
 
     $scope.update = function(index) {
-        $scope.data.items[index].editing = false;
+        var item  = $scope.data.items[index];
+        item.ten = Number(item.ten);
+        item.fifty = Number(item.fifty);
+        item.ninety = Number(item.ninety);
+        item.editing = false;
         draw();
     }
 

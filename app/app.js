@@ -12,32 +12,70 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
 }]).
 factory('setupService', function() {
   var setupData = {
+    startDate: new Date(2019,9,21),
     pi: Math.PI,
     items: [
-        {
-            name: "Feature 1",
-            ten: 12,
-            fifty: 17,
-            ninety: 20
-        },
-        {
-            name: "Feature 2",
-            ten: 10,
-            fifty: 11,
-            ninety: 14
-        },
-        {
-            name: "Feature 3",
-            ten: 8,
-            fifty: 12,
-            ninety: 16
-        },
-        {
-            name: "Feature 4",
-            ten: 14,
-            fifty: 17,
-            ninety: 21
-        }
+       {
+          "name":"Users persist",
+          "ten":1,
+          "fifty":2,
+          "ninety":3
+       },
+       {
+          "name":"Matters by recency",
+          "ten":2,
+          "fifty":3,
+          "ninety":5
+       },
+       {
+          "name":"Client Matters List by recency",
+          "ten":4,
+          "fifty":8,
+          "ninety":14
+       },
+       {
+          "name":"Group Incomplete Entries",
+          "ten":4,
+          "fifty":8,
+          "ninety":12
+       },
+       {
+          "name":"No Internet Notification",
+          "ten":3,
+          "fifty":5,
+          "ninety":10
+       },
+       {
+          "name":"Larger Clicking Targets",
+          "ten":2,
+          "fifty":3,
+          "ninety":5
+       },
+       {
+          "name":"PTA Code",
+          "ten":1,
+          "fifty":2,
+          "ninety":3
+       },
+       {
+          "name":"Stretch",
+          "ten":4,
+          "fifty":6,
+          "ninety":10
+       },
+       {
+          "name":"Undo Release",
+          "ten":5,
+          "fifty":9,
+          "ninety":13,
+          "editing":true
+       },
+       {
+          "name":"Explainable AI",
+          "ten":5,
+          "fifty":10,
+          "ninety":17
+       }
     ],
     units: "Team weeks"
   };
