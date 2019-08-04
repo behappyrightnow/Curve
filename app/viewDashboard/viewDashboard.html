@@ -15,9 +15,9 @@
                     <tbody>
                         <tr ng-repeat="item in data.items track by $index">
                             <td>
-                                <button ng-if="item.editing===false" class="btn btn-primary btn-mini" ng-click="edit($index)">Edit</button>
-                                <button ng-if="item.editing===true" class="btn btn-primary btn-mini" ng-click="update($index)">Done</button>
-                                <button class="btn btn-primary btn-warn" ng-click="remove($index)">Remove</button>
+                                <i ng-if="item.editing===false" class="far fa-edit fa-lg" ng-click="edit($index)"></i>
+                                <i ng-if="item.editing===true" style="color:#00FF00;" class="fas fa-check fa-lg" ng-click="update($index)"></i>
+                                <i ng-if="item.editing===false" class="far fa-trash-alt fa-lg" style="color:#FF0000  ;" ng-click="remove($index)"></i>
                             </td>
                             <td>
                                 <span ng-if="item.editing===false">{{item.name}}</span>
