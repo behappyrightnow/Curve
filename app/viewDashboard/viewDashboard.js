@@ -16,6 +16,24 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
         return item;
     });
     var p = [0.1, 0.5, 0.9];
+
+    function getMonthNameFor(d) {
+        var month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sep";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
+        return month[d.getMonth()];
+    }
+
     function sum() {
         var aMatrix = [];
         var a1Vector = $scope.data.items.map(function(item) { return item.fifty; });
@@ -58,11 +76,20 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
         var sumVector = p.map(function(probability) {
             return sumA1+sumA2*Math.log(probability/(1-probability))+sumA3*(probability-0.5)* Math.log(p[0]/(1-probability));
         });
+        var dates = sumVector.map(function(sumItem) {
+            return addBusinessDays($scope.data.startDate, sumItem);
+        });
+        var dateStrings = dates.map(function(dateItem) {
+            return getMonthNameFor(dateItem)+" "+dateItem.getDate()+" "+dateItem.getFullYear();
+        });
         return {
             name: 'Sum',
             ten:sumVector[0],
             fifty:sumVector[1],
-            ninety:sumVector[2]
+            ninety:sumVector[2],
+            tenDate: dateStrings[0],
+            fiftyDate: dateStrings[1],
+            ninetyDate: dateStrings[2]
         }
     }
 
@@ -75,6 +102,14 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
         }
         return arr3;
     }
+
+    function addBusinessDays(d,n) {
+        d = new Date(d.getTime());
+        var day = d.getDay();
+        d.setDate(d.getDate() + n + (day === 6 ? 2 : +!day) + (Math.floor((n - 1 + (day % 6 || 1)) / 5) * 2));
+        return d;
+    }
+
 
     function draw() {
         $scope.sum = sum();
@@ -255,5 +290,9 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
             return index !== i;
         });
         draw();
+    }
+
+    $scope.recalcDate = function() {
+        $scope.sum = sum();
     }
 }]);
