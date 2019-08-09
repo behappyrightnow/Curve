@@ -77,7 +77,7 @@ factory('setupService', function() {
           "ninety":17
        }
     ],
-    units: "Team weeks"
+    units: "Team days"
   };
 
   var getData = function() {
