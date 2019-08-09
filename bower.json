@@ -11,7 +11,8 @@
     "angular": "1.6.6",
     "angular-route": "^1.6.6",
     "bootstrap": "*",
-    "font-awesome": "*"
+    "font-awesome": "*",
+    "jasmine": "*"
   },
   "resolutions": {
     "angular": "1.7.8"
