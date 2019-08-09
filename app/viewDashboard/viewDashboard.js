@@ -34,6 +34,10 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
         return month[d.getMonth()];
     }
 
+    function dateStringFor(dateItem) {
+        return getMonthNameFor(dateItem)+" "+dateItem.getDate()+", "+dateItem.getFullYear();
+    }
+
     function sum() {
         var aMatrix = [];
         var a1Vector = $scope.data.items.map(function(item) { return item.fifty; });
@@ -80,7 +84,7 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
             return addBusinessDays($scope.data.startDate, sumItem);
         });
         var dateStrings = dates.map(function(dateItem) {
-            return getMonthNameFor(dateItem)+" "+dateItem.getDate()+" "+dateItem.getFullYear();
+            return dateStringFor(dateItem);
         });
         return {
             name: 'Sum',
@@ -110,6 +114,80 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
         return d;
     }
 
+    function makeChartUsing(series, units, chartTitle, subTitle, yAxisTitle, startDate,showDate) {
+        return {
+            chart: {
+                type: 'line',
+                zoomType: 'xy'
+            },
+            title: {
+                text: chartTitle
+            },
+            subtitle: {
+                text: subTitle
+            },
+            xAxis: {
+                title: {
+                    enabled: true,
+                    text: units
+                },
+                startOnTick: true,
+                endOnTick: true,
+                showLastLabel: true,
+                min: 0,
+                labels: {
+                    formatter: function(val) {
+                       console.log(val.value);
+                       if (showDate === undefined || showDate == false) {
+                        return val.value;
+                       } else {
+                        return dateStringFor(addBusinessDays(startDate, val.value));
+                       }
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: yAxisTitle
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 70,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                borderWidth: 1
+            },
+            plotOptions: {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        pointFormat: '{point.x} cm, {point.y} kg'
+                    }
+                }
+            },
+            series: series
+        };
+    }
 
     function draw() {
         $scope.sum = sum();
@@ -141,129 +219,11 @@ angular.module('curve.dashboard', ['ngRoute', 'curve'])
                 })
             };
         });
-        Highcharts.chart('pdf', {
-            chart: {
-                type: 'line',
-                zoomType: 'xy'
-            },
-            title: {
-                text: 'Probability Distribution Function'
-            },
-            subtitle: {
-                text: 'Source: Input Features'
-            },
-            xAxis: {
-                title: {
-                    enabled: true,
-                    text: 'Team Weeks'
-                },
-                startOnTick: true,
-                endOnTick: true,
-                showLastLabel: true
-            },
-            yAxis: {
-                title: {
-                    text: 'PDF'
-                }
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'left',
-                verticalAlign: 'top',
-                x: 100,
-                y: 70,
-                floating: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-                borderWidth: 1
-            },
-            plotOptions: {
-                scatter: {
-                    marker: {
-                        radius: 5,
-                        states: {
-                            hover: {
-                                enabled: true,
-                                lineColor: 'rgb(100,100,100)'
-                            }
-                        }
-                    },
-                    states: {
-                        hover: {
-                            marker: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    tooltip: {
-                        headerFormat: '<b>{series.name}</b><br>',
-                        pointFormat: '{point.x} cm, {point.y} kg'
-                    }
-                }
-            },
-            series: pdfSeries
-        });
+        Highcharts.chart('pdf', makeChartUsing(pdfSeries, $scope.data.units, "Probability Distribution Function", "Source: Input Features", "Probability Dist Function", $scope.data.startDate));
 
-        Highcharts.chart('cdf', {
-            chart: {
-                type: 'line',
-                zoomType: 'xy'
-            },
-            title: {
-                text: 'Cumulative Distribution Function'
-            },
-            subtitle: {
-                text: 'Source: Input Features'
-            },
-            xAxis: {
-                title: {
-                    enabled: true,
-                    text: 'Team Weeks'
-                },
-                startOnTick: true,
-                endOnTick: true,
-                showLastLabel: true
-            },
-            yAxis: {
-                title: {
-                    text: 'Probability'
-                }
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'left',
-                verticalAlign: 'top',
-                x: 100,
-                y: 70,
-                floating: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-                borderWidth: 1
-            },
-            plotOptions: {
-                scatter: {
-                    marker: {
-                        radius: 5,
-                        states: {
-                            hover: {
-                                enabled: true,
-                                lineColor: 'rgb(100,100,100)'
-                            }
-                        }
-                    },
-                    states: {
-                        hover: {
-                            marker: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    tooltip: {
-                        headerFormat: '<b>{series.name}</b><br>',
-                        pointFormat: '{point.x} cm, {point.y} kg'
-                    }
-                }
-            },
-            series: cdfSeries
-        });
+        Highcharts.chart('cdf', makeChartUsing(cdfSeries, $scope.data.units, "Cumulative Distribution Function", "Source: Input Features", "Cumulative Dist Function", $scope.data.startDate));
+
+        Highcharts.chart('sum', makeChartUsing([cdfSeries[cdfSeries.length-1]], $scope.data.units, "Cumulative Distribution Function of Sum", "Source: Input Features", "Cumulative Dist Function", $scope.data.startDate, true));
     }
     draw();
     $scope.addRow = function() {
