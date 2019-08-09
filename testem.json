@@ -1,0 +1,7 @@
+{
+  "framework": "jasmine2",
+  "src_files": [
+      "app/viewDashboard/*.js",
+      "test/*.js"
+  ]
+}
